@@ -38,6 +38,8 @@ public class PackageWorker {
 		} else {
 			fees.add(findPosition(0, fees.size() - 1, newFee), newFee);
 		}
+
+		recalculateFees();
 	}
 
 	/**
@@ -46,7 +48,7 @@ public class PackageWorker {
 	 */
 	private int findPosition(int low, int high, FeeInfo newFee) {
 		if (low + 1 < high) {
-			int median = (low+high)/2;
+			int median = (low + high) / 2;
 			FeeInfo medFee = fees.get(median);
 			if (medFee.compareTo(newFee) < 0) {
 				return findPosition(median, high, newFee);
@@ -56,7 +58,7 @@ public class PackageWorker {
 		} else {
 			return high;
 		}
-		
+
 	}
 
 	public void listFees() {
@@ -85,10 +87,6 @@ public class PackageWorker {
 		packages.get(zip).add(new PackageInfo(weight, zip, computeFee(weight)));
 	}
 
-	public void processPackages() {
-
-	}
-
 	public void printPackageInfo() {
 		final List<PackageInfo> toOutput = new ArrayList<PackageInfo>();
 		packages.forEach((z, l) -> {
@@ -107,7 +105,15 @@ public class PackageWorker {
 			}
 		});
 
-		toOutput.forEach(o -> System.out.printf("%05d %.3f %.2f\n", o.getZipCode(), o.getWeight(), o.getFee()));
+		System.out.println("| ZIP |  Weight  |  Fee   |");
+		System.out.println("+-----+----------+--------+");
+		toOutput.forEach(o -> System.out.printf("|%05d| %8.3f | %6.2f |\n", o.getZipCode(), o.getWeight(), o.getFee()));
+	}
+
+	private void recalculateFees() {
+		packages.forEach((z, l) -> {
+			l.stream().forEach(o -> o.setFee(computeFee(o.getWeight())));
+		});
 	}
 
 	private float computeFee(float weight) {

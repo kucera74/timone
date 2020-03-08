@@ -101,11 +101,11 @@ public class Main {
 		}
 		if (lineParts.length == 0 || command == null) {
 			System.out.println("\u001B[33mType a command.\u001B[0m");
-			readCommand();
+			return readCommand();
 		}
 		
 		if (lineParts.length > 1) {
-			return new SimpleEntry<ECommand, String[]>(command, Arrays.copyOfRange(lineParts, 1, lineParts.length-1));
+			return new SimpleEntry<ECommand, String[]>(command, Arrays.copyOfRange(lineParts, 1, lineParts.length));
 		} else {
 			return new SimpleEntry<ECommand, String[]>(command, null);
 		}
@@ -207,9 +207,9 @@ public class Main {
 				}
 			}
 		} catch (FileNotFoundException e) {
-			System.out.println("\u001B[31mGived file doesn't exists. Try another file.\u001B[0m");
+			System.out.println("\u001B[31mGiven file doesn't exists. Try another file.\u001B[0m");
 		} catch (IOException e) {
-			System.out.println("\u001B[31mGived file cannot be opened.\u001B[0m");
+			System.out.println("\u001B[31mGiven file cannot be opened.\u001B[0m");
 		}
 		return result;
 	}
